@@ -158,7 +158,7 @@ const Header = ({ openLogin }) => {
             Functionalities
           </NavLink>
 
-          <NavLink to="/internal-services" className={navStyle}>
+          <NavLink to="/internalServices" className={navStyle}>
             <FontAwesomeIcon icon={faCogs} />
             AFCAO Internal Services
           </NavLink>

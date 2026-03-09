@@ -1,17 +1,22 @@
-// server.js
+import dotenv from "dotenv";
+dotenv.config();
+import { connectDB } from "./config/db.js";
+import app from "./app.js";
 
-import express from "express";
-import cors from "cors";
-import userRoutes from "./routes/userRoutes.js";
-import homeRoutes from "./routes/homepageRoutes.js";
+const PORT = process.env.PORT || 3000;
 
-const app = express();
+export default async function startServer() {
+  try {
 
-app.use(express.json());
-app.use(cors());
+    await connectDB();
+    console.log("✅ Database Connected");
 
-// API Routes
-app.use("/users", userRoutes);
-app.use("/home", homeRoutes);
+    app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    });
 
-export default app;
+  } catch (error) {
+    console.error("❌ Startup Error:", error);
+    process.exit(1);
+  }
+}

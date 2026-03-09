@@ -15,6 +15,21 @@ const Dashboard = lazy(() => import('../components/personal/Dashboard.jsx'))
 const PublicLayout = lazy(() => import('../layouts/PublicLayout.jsx'))
 const PersonalLayout = lazy(() => import('../layouts/PersonalLayout.jsx'))
 
+const Payslips = lazy(() => import ('../components/personal/Payslips.jsx'))
+const Profile = lazy(() => import ('../components/personal/Profile.jsx'))
+const IncomeTax = lazy(() => import ('../components/personal/IncomeTax.jsx'))
+const Consents = lazy(() => import ('../components/personal/Consents.jsx'))
+const ProvidentFund = lazy(() => import ('../components/personal/ProvidentFund.jsx'))
+const Claims = lazy(() => import ('../components/personal/Claims.jsx'))
+const Applications = lazy(() => import ('../components/personal/Applications.jsx'))
+const MisPersonal = lazy(() => import ('../components/personal/MisPersonal.jsx'))
+const QueryManagement = lazy(() => import ('../components/personal/QueryManagement.jsx'))
+
+const TravelClaims = lazy(() => import ('../components/personal/forms/TravelClaims.jsx'))
+const TravelAdvances = lazy(() => import ('../components/personal/forms/TravelAdvances.jsx'))
+const IncomeTaxForm = lazy(() => import ('../components/personal/forms/IncomeTaxForm.jsx'))
+const PFVariation = lazy(() => import ('../components/personal/forms/PFVariation.jsx'))
+
 function App() {
 
   return (
@@ -38,7 +53,7 @@ function App() {
             <Route path="/services" element={<Services />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/functionalities" element={<Functionalities />} />
-            <Route path="/internal-services" element={<InternalServices />} />
+            <Route path="/internalServices" element={<InternalServices />} />
           </Route>
 
           <Route element={
@@ -47,6 +62,21 @@ function App() {
             </RouterGuard>
           }>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/payslips" element={<Payslips />} />
+            <Route path="/incomeTax" element={<IncomeTax/>} />
+            <Route path="/consents" element={<Consents />} />
+            <Route path="/providentFund" element={<ProvidentFund />} />
+            <Route path="/claims" element={<Claims />} />
+
+            <Route path="/forms/travel-claims" element={<TravelClaims />} />
+            <Route path="/forms/travel-advances" element={<TravelAdvances />} />
+            <Route path="/forms/pf-variation" element={<PFVariation />} />
+            <Route path="/forms/income-tax" element={<IncomeTaxForm />} />
+
+            <Route path="/applications" element={<Applications />} />
+            <Route path="/misPersonal" element={<MisPersonal />} />
+            <Route path="/queryManagement" element={<QueryManagement />} />
           </Route>
 
         </Routes>

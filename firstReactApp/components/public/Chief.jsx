@@ -11,7 +11,7 @@ const Chief = () => {
 
     useEffect(
         () => {
-            axios.get("http://localhost:3000/home/chief")
+            axios.get("/api/public/chief")
                 .then(res => {setChief({
                     name: res.data[0].NAME,
                     title: res.data[0].TITLE,
@@ -24,7 +24,7 @@ const Chief = () => {
             
     return (
         <>
-        <div className= "grid grid-cols-[300px_1fr_1fr_1fr_1fr] h-100vh bg-[url('../src/assets/hero2.jpg')] bg-cover bg-center text-white shadow-md mb-6">
+        <div className= "grid grid-cols-[300px_1fr_1fr_1fr_1fr] h-100vh bg-[url('../src/assets/hero.jpg')] bg-cover bg-center text-white shadow-md mb-6">
             <div className="col-span-1 mx-auto w-3/5 py-10"></div>
             <div className="col-span-1 mx-auto w-3/5 py-10">
                 <img src={`data:image/jpeg;base64,${chief.photo}`} alt="Chief" className="rounded-t-lg" style={{maxWidth: "102%"}} />

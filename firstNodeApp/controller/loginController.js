@@ -1,9 +1,6 @@
 import oracledb from "oracledb";
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import cors from 'cors';
-
-const JWT_SECRET = 'secret123';
+import { saveRefreshToken } from "../models/tokenModel.js";
+import { accessTokenGen, refreshTokenGen } from "../utils/tokenUtils.js";
 
 export async function loginForm (req, res){
   let connection;
@@ -14,21 +11,28 @@ export async function loginForm (req, res){
 
     const result = await connection.execute (`SELECT * FROM USERS_ON_REACT WHERE CATEGORY = :category AND SNO = :sno AND PASSWORD = :password` , {category,sno,password}, { outFormat: oracledb.OUT_FORMAT_OBJECT } );
     if (!result.rows || result.rows.length === 0 ) 
-      {return res.status(404).json({message: "User not found"})
+      {return res.status(401).json({message: "User Unauthorized"})
       };
     
-    if (password == result.rows[0].PASSWORD){
-        const token = jwt.sign({sno:result.rows[0].SNO, category: result.rows[0].CATEGORY, createDate: result.rows[0].CREATED_DATE}, JWT_SECRET, {expiresIn: '1h'});
-        const {password, ...userData } = result.rows[0];
-        res.json({token, user: userData});
-    } else {
-          res.status(401).json({message: "Invalid Crednetials"});
-    }
+      const user = result.rows[0];
+      const accessToken = accessTokenGen(user);
+      const refreshToken = refreshTokenGen(user);
+
+      await saveRefreshToken(connection, user.SNO, refreshToken);
+      await connection.commit();
+      res.cookie("refreshToken", refreshToken, {
+                  httpOnly: true,
+                  secure: false, // true in production (HTTPS)
+                  sameSite: "Strict",
+                  maxAge: 3600000
+                });
+      
+      return res.json({ accessToken });          
   }
 catch (err) {
   console.error("❌ Full Error:", err);
 
-  res.status(500).json({
+  return res.status(500).json({
     message: "Database error",
     error: err.message   // ✅ only message
   });

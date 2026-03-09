@@ -14,7 +14,7 @@ const Dashboard = () => {
   ])
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 w-full p-8">
 
       {/* Welcome Section */}
       <div className="mb-8">
