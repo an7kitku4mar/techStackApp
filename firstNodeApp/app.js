@@ -5,8 +5,13 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import publicRoutes from "./routes/publicRoutes.js";
 import personalRoutes from "./routes/personalRoutes.js";
+import learningRoutes from "./routes/learningRoutes.js";
+
+import ProjectWatcher from "./utils/projectWatcher.js";
 
 const app = express();
+
+ProjectWatcher();
 
 /* Middleware */
 
@@ -26,6 +31,7 @@ app.use(cookieParser());
 app.use("/auth", authRoutes);
 app.use("/public", publicRoutes);
 app.use("/personal", personalRoutes);
+app.use("/fs", learningRoutes);
 
 app.get("/", (req, res) => {
   res.send("<h1>Welcome to Backend Homepage</h1>");

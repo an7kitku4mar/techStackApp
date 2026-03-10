@@ -118,7 +118,7 @@ export default function TravelClaims(){
         </div>
 
         <div className="status">
-          <p>Dirty: {isDirty ? "Yes" : "No"}</p>
+
           <p>Valid: {isValid ? "Yes" : "No"}</p>
         </div>
       </form>
