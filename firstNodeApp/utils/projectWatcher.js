@@ -4,37 +4,67 @@ import path from 'path'
 import os from 'os'
 
 export default function ProjectWatcher(){
-    const logFile = path.join("config","changeLogs.txt")
+    const backendLogDir = path.resolve("./config/logs")
+    const frontendLogDir = path.resolve("../firstReactApp/config/logs")
+    const backendLogFile = path.join(backendLogDir,"fsChangeLogs.txt")
+    const frontendLogFile = path.join(frontendLogDir,"fsChangeLogs.txt")
 
-    const watchmen = chokidar.watch ("./", {
-        ignored: ["node_modules", ".git", logFile],
+    const backendPath = path.resolve("./");
+    const frontendPath = path.resolve("../firstReactApp");
+
+    const backendWatchmen = chokidar.watch (backendPath, {
+        ignored: ["node_modules", ".git", backendLogFile],
         persistent:true,
         ignoreInitial:true,
         atomic:true
     });
 
-console.log("Hostname: ", os.hostname(), "| Username: ", os.userInfo().username);
-console.log("Processor: ", os.cpus()[0].model);
-console.log("MAC Address: ", os.networkInterfaces()["Wi-Fi"][0].mac);
-console.log("IP Address: ", os.networkInterfaces()["Wi-Fi"][3].family, os.networkInterfaces()["Wi-Fi"][3].address);
+    const frontendWatchmen = chokidar.watch (frontendPath, {
+        ignored: ["node_modules", ".git", frontendLogFile],
+        persistent:true,
+        ignoreInitial:true,
+        atomic:true
+    });
 
-    watchmen
-    .on("add", file => logChange("FILE CREATED", file))
-    .on("change", file => logChange("FILE MODIFIED", file))
-    .on("unlink", file => logChange("FILE DELETED", file))
-    .on("addDir", dir => logChange("DIRECTORY CREATED", dir))
-    .on("unlinkDir", dir => logChange("DIRECTORY DELETED", dir));
+    backendWatchmen
+    .on("add", file => logBackend("FILE CREATED",file))
+    .on("change", file => logBackend("FILE MODIFIED",file))
+    .on("unlink", file => logBackend("FILE DELETED",file))
+    .on("addDir", dir => logBackend("DIRECTORY CREATED",dir))
+    .on("unlinkDir", dir => logBackend("DIRECTORY DELETED",dir))
 
-    function logChange(eventType, filePath){
-            const time = new Date().toLocaleString();
-            const osInfo = "OS: " + os.version() + os.arch() + "| Processor: " + os.cpus()[0].model;
-            const userInfo = "Hostname: " + os.hostname() + "| Username: " + os.userInfo().username;
-            const sysInfo = "MAC Address: " + os.networkInterfaces()["Wi-Fi"][0].mac + " | IP Address: " + os.networkInterfaces()["Wi-Fi"][3].family +  os.networkInterfaces()["Wi-Fi"][3].address;
-            const logEntry = `\n${time} | ${eventType} | File Path: ${filePath} | ${sysInfo} | ${userInfo} | ${osInfo}`;
+    frontendWatchmen
+    .on("add", file => logFrontend("FILE CREATED",file))
+    .on("change", file => logFrontend("FILE MODIFIED",file))
+    .on("unlink", file => logFrontend("FILE DELETED",file))
+    .on("addDir", dir => logFrontend("DIRECTORY CREATED",dir))
+    .on("unlinkDir", dir => logFrontend("DIRECTORY DELETED",dir))
 
-            fs.appendFile(logFile, logEntry, (err) => {
-                if(err) console.error("Log Write Error: ", err);
-            });
+    function buildLog(eventType,filePath){
+
+        const time = new Date().toLocaleString()
+        const osInfo = `OS:${os.version()} ${os.arch()} | CPU:${os.cpus()[0].model}`
+        const userInfo = `Hostname:${os.hostname()} | User:${os.userInfo().username}`
+        const net = os.networkInterfaces()["Wi-Fi"]
+        const sysInfo = `MAC:${net[0].mac} | IP:${net.find(n=>n.family==="IPv4")?.address}`
+
+        return `\n${time} | ${eventType} | File Path:${filePath} | ${sysInfo} | ${userInfo} | ${osInfo}`
+
+    }
+
+    function logBackend(eventType,filePath){
+
+        const logEntry = buildLog(eventType,filePath)
+        fs.appendFile(backendLogFile,logEntry,(err)=>{
+            if(err) console.error("Backend Log Error:",err)
+        })
     }
     
+    function logFrontend(eventType,filePath){
+
+        const logEntry = buildLog(eventType,filePath)
+        fs.appendFile(frontendLogFile,logEntry,(err)=>{
+            if(err) console.error("Frontend Log Error:",err)
+        })
+    }    
 }
