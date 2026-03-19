@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import Spotlight from './Spotlight';
+import Carousel from './Carousel';
 import Chief from './Chief';
 import Modal from "./Modal";
 import Notification from "./Notification";
+import Carousel3D from "./Carousel3D";
+import Accordion from "./Accordion";
+import Testimonials from './Testimonials';
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -18,7 +21,10 @@ const Home = () => {
           <Modal />
           <Notification />
           <Chief />
-          <Spotlight />
+          <Carousel />
+          <Carousel3D />
+          <Accordion />
+          <Testimonials />
           </div>
     </>
   )

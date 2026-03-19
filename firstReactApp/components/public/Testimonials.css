@@ -1,0 +1,32 @@
+.testimonial-container {
+  overflow: hidden;
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  position:relative;
+}
+
+
+
+/* .testimonial-track {
+  display: flex;
+  flex-direction: column;
+  animation: scrollUp 5s linear infinite;
+} */
+
+.testimonial-card {
+  padding: 20px;
+  border-bottom: 1px solid #ffffff;
+  background: #000000;
+}
+
+/* Animation */
+/* @keyframes scrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+} */
+
+
